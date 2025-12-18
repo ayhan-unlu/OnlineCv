@@ -1,4 +1,4 @@
-package com.ayhanunlu;
+package com.ayhanunlu.controller;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +20,13 @@ public class ThymeleafController {
     @GetMapping("/admin_dashboard")
     public String adminDashboard(@AuthenticationPrincipal UserDetails userDetails){
         return "admin_dashboard";
+    }
+
+    /// GET REGISTER
+    ///  http://localhost:8080/register
+    @GetMapping("/register")
+    public String register(){
+        return "register";
     }
 
 
