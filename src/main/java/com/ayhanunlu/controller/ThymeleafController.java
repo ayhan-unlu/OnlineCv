@@ -18,6 +18,14 @@ public class ThymeleafController {
         this.userService = userService;
     }
 
+
+    /// GET ROOT
+    /// http://localhost:8080
+    @GetMapping("/")
+    public String root(){
+        return "redirect:/login";
+    }
+
     /// GET LOGIN
     /// http://localhost:8080/login
     @GetMapping("/login")
@@ -30,6 +38,13 @@ public class ThymeleafController {
     @GetMapping("/admin_dashboard")
     public String adminDashboard(@AuthenticationPrincipal UserDetails userDetails) {
         return "admin_dashboard";
+    }
+
+    /// GET USER DASHBOARD
+    /// http://localhost:8080/user_dashboard
+    @GetMapping("/user_dashboard")
+    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails){
+        return "user_dashboard";
     }
 
     /// GET REGISTER

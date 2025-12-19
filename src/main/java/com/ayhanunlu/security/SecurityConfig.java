@@ -9,17 +9,26 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    public final RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler;
+
+    public SecurityConfig(RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler) {
+        this.roleBasedAuthenticationSuccessHandler = roleBasedAuthenticationSuccessHandler;
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/admin_dashboard").hasRole("ADMIN")
+                        .requestMatchers("/user_dashboard").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/admin_dashboard", true)
-                        .failureUrl("/login?error=true")
+                                .loginPage("/login")
+//                        .defaultSuccessUrl("/admin_dashboard", true)
+                                .successHandler(roleBasedAuthenticationSuccessHandler)
+                                .failureUrl("/login?error=true")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
