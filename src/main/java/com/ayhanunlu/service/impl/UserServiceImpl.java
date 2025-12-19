@@ -1,12 +1,13 @@
 package com.ayhanunlu.service.impl;
 
+import com.ayhanunlu.data.dto.RegisterDto;
 import com.ayhanunlu.data.entity.UserEntity;
 import com.ayhanunlu.enums.Role;
 import com.ayhanunlu.enums.Status;
+import com.ayhanunlu.exception.UserAlreadyExistsException;
 import com.ayhanunlu.repository.UserRepository;
 import com.ayhanunlu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
-    public void createDefaultAdmin(){
-        if(userRepository.findByUsername("a").isEmpty()){
+    public void createDefaultAdmin() {
+        if (userRepository.findByUsername("a").isEmpty()) {
             UserEntity defaultAdminEntity = new UserEntity();
             defaultAdminEntity.setUsername("a");
             defaultAdminEntity.setPassword(passwordEncoder.encode("a"));
@@ -38,6 +41,34 @@ public class UserServiceImpl implements UserService {
             userRepository.save(defaultAdminEntity);
             log.info("Default Admin is Created");
         }
+    }
+
+    @Override
+    public void registerUser(RegisterDto registerDto) {
+        if (isUsernameInUse(registerDto.getUsername())) {
+            log.error("Username {} is already in use", registerDto.getUsername());
+            throw new UserAlreadyExistsException("User Already Exists.");
+        } else {
+            UserEntity newUserEntity = new UserEntity();
+            newUserEntity.setUsername(registerDto.getUsername());
+            newUserEntity.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+            newUserEntity.setRole(Role.ROLE_USER);
+            newUserEntity.setStatus(Status.ACTIVE);
+            newUserEntity.setName(registerDto.getName());
+            newUserEntity.setSurname(registerDto.getSurname());
+            newUserEntity.setPhone(registerDto.getPhone());
+            newUserEntity.setFieldOfExperience(registerDto.getFieldOfExperience());
+            newUserEntity.setExperienceYear(registerDto.getExperienceYear());
+            newUserEntity.setMilitaryServiceFinished(registerDto.isMilitaryServiceFinished());
+            newUserEntity.setCvStorageMonth(registerDto.getCvStorageMonth());
+            newUserEntity.setFailedLoginAttempts(0);
+            userRepository.save(newUserEntity);
+            log.info("New User {} has been registered.", newUserEntity.getUsername());
+        }
+    }
+
+    private boolean isUsernameInUse(String username) {
+        return userRepository.findByUsername(username).isPresent();
     }
 
 }

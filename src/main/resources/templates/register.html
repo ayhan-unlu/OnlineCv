@@ -7,8 +7,62 @@
 <body>
 <div class="text-center mt-5">
     <h1 class="text-center" th:text="'Welcome to the Registration Page'">
-
     </h1>
+</div>
+<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+<div class="text-center mt-5">
+
+    <h2 class="text-center mt-4" th:text="'Registration Form'"></h2>
+<form th:action="@{/register}" method="post">
+    <table>
+        <tr>
+            <td><label th:text="'Username'"></label></td>
+            <td><input type="text" name="username"></td>
+        </tr>
+<!--        tr*8>td*2 TAB-->
+<!--        tr*8>td>label+td>input TAB-->
+        <tr>
+            <td><label th:text="'Password'"></label>
+            <td><input type="password" name="password"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'Name'"></label>
+            <td><input type="text" name="name"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'Surname'"></label>
+            <td><input type="text" name="surname"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'Phone'"></label>
+            <td><input type="text" name="phone"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'Field of Experience'"></label>
+            <td><input type="text" name="fieldOfExperience"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'Experience Year'"></label>
+            <td><input type="number" name="experienceYear"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'Military Service Finished'"></label>
+            <td><input type="checkbox" name="militaryServiceFinished"></td>
+            </td>
+        </tr>
+        <tr>
+            <td><label th:text="'CV Storage Month'"></label>
+            <td><input type="number" name="cvStorageMonth"></td>
+        </tr>
+    </table>
+    <button type="submit" th:text="'Register'"></button>
+</form>
 
 </div>
 
