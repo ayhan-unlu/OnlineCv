@@ -17,20 +17,36 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
         this.userRepository = userRepository;
     }
 
+    /* @Override
+     public boolean isUserPresent(String username) {
+         return userRepository.findByUsername(username).isPresent();
+     }
+
+
+     @Override
+     public boolean isPasswordCorrect(String username, String password) {
+         return false;
+     }
+    */
     @Override
-    public boolean isUserPresent(String username) {
-        return userRepository.findByUsername(username).isPresent();
+    public void increaseFailedLoginAttempts(String username) {
+        userRepository.findByUsername(username).ifPresent(foundUserEntity -> {
+            int increasedFailedLoginAttempts = foundUserEntity.getFailedLoginAttempts() + 1;
+            foundUserEntity.setFailedLoginAttempts(increasedFailedLoginAttempts);
+            if (increasedFailedLoginAttempts >= 3) {
+                foundUserEntity.setStatus(Status.BLOCKED);
+            }
+            userRepository.save(foundUserEntity);
+        });
     }
 
     @Override
-    public boolean isUserActive(String username) {
-        return userRepository.findByUsername(username)
-                .map(userEntity -> userEntity.getStatus() == Status.ACTIVE)
-                .orElse(false);
+    public void resetFailedLoginAttempts(String username) {
+        userRepository.findByUsername(username).ifPresent(foundUserEntity ->
+        {
+            foundUserEntity.setFailedLoginAttempts(0);
+            userRepository.save(foundUserEntity);
+        });
     }
 
-    @Override
-    public boolean isPasswordCorrect(String username, String password) {
-        return false;
-    }
 }

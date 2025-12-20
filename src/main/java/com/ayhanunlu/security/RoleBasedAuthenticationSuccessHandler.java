@@ -1,5 +1,6 @@
 package com.ayhanunlu.security;
 
+import com.ayhanunlu.service.LoginAttemptService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,18 +14,26 @@ import java.io.IOException;
 @Component
 public class RoleBasedAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
+    private final LoginAttemptService loginAttemptService;
+
+    public RoleBasedAuthenticationSuccessHandler(LoginAttemptService loginAttemptService) {
+        this.loginAttemptService = loginAttemptService;
+    }
+
     @Override
     public void onAuthenticationSuccess(
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse,
             Authentication authentication
     ) throws IOException, ServletException {
+        loginAttemptService.resetFailedLoginAttempts(authentication.getName());
         for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-            if (grantedAuthority.getAuthority().equals("ROLE_ADMIN")) {
+            if ("ROLE_ADMIN".equals(grantedAuthority.getAuthority())) {
                 httpServletResponse.sendRedirect("/admin_dashboard");
                 return;
             }
-            if (grantedAuthority.getAuthority().equals("ROLE_USER")) {
+
+            if ("ROLE_USER".equals(grantedAuthority.getAuthority())) {
                 httpServletResponse.sendRedirect("/user_dashboard");
                 return;
             }

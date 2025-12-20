@@ -6,6 +6,7 @@ import com.ayhanunlu.enums.Role;
 import com.ayhanunlu.enums.Status;
 import com.ayhanunlu.exception.UserAlreadyExistsException;
 import com.ayhanunlu.repository.UserRepository;
+import com.ayhanunlu.service.LoginAttemptService;
 import com.ayhanunlu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,10 +18,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LoginAttemptService loginAttemptService;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.loginAttemptService =loginAttemptService;
     }
 
     @Override
@@ -70,5 +73,18 @@ public class UserServiceImpl implements UserService {
     private boolean isUsernameInUse(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
+
+    public void onLoginFailure(String username){
+        loginAttemptService.increaseFailedLoginAttempts(username);
+    }
+
+    public boolean isUserActive(String username){
+        return userRepository.findByUsername(username)
+                .map(userEntity -> userEntity.getStatus()==Status.ACTIVE)
+                .orElse(false);
+
+    }
+
+
 
 }

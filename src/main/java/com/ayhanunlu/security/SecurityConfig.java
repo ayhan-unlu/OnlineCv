@@ -10,9 +10,11 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     public final RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler;
+    public final LoginFailureHandler loginFailureHandler;
 
-    public SecurityConfig(RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler) {
+    public SecurityConfig(RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler, LoginFailureHandler loginFailureHandler) {
         this.roleBasedAuthenticationSuccessHandler = roleBasedAuthenticationSuccessHandler;
+        this.loginFailureHandler = loginFailureHandler;
     }
 
     @Bean
@@ -28,7 +30,10 @@ public class SecurityConfig {
                                 .loginPage("/login")
 //                        .defaultSuccessUrl("/admin_dashboard", true)
                                 .successHandler(roleBasedAuthenticationSuccessHandler)
+                                .failureHandler(loginFailureHandler)
+/*
                                 .failureUrl("/login?error=true")
+*/
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
