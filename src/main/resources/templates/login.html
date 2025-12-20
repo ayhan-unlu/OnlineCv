@@ -10,6 +10,7 @@
 </div>
 
 <!--http://localhost:8080/login -->
+<div th:if="${loginDto.errorMessage}" class="alert alert-danger" th:text="${loginDto.errorMessage}"></div>
 
 <div class="text-center mt-5">
     <form th:action="@{/login}" method="post">

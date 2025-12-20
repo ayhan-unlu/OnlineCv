@@ -1,7 +1,9 @@
 package com.ayhanunlu.controller;
 
+import com.ayhanunlu.data.dto.LoginDto;
 import com.ayhanunlu.data.dto.RegisterDto;
 import com.ayhanunlu.exception.BusinessException;
+import com.ayhanunlu.repository.UserRepository;
 import com.ayhanunlu.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,23 +15,38 @@ import org.springframework.web.bind.annotation.*;
 public class ThymeleafController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public ThymeleafController(UserService userService) {
+    public ThymeleafController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
     /// GET ROOT
     /// http://localhost:8080
     @GetMapping("/")
-    public String root(){
+    public String root() {
         return "redirect:/login";
     }
+
 
     /// GET LOGIN
     /// http://localhost:8080/login
     @GetMapping("/login")
-    public String login() {
+    public String login(
+            @RequestParam(required = false) String registered,
+            @RequestParam(required = false) String error,
+            Model model
+    ) {
+        LoginDto loginDto = new LoginDto();
+        if (registered != null) {
+            loginDto.setErrorMessage("Registration successful. Please Log in.");
+        }
+        if (error != null) {
+            loginDto.setErrorMessage("Invalid username or password. Please try again.");
+        }
+        model.addAttribute("loginDto", loginDto);
         return "login";
     }
 
@@ -43,7 +60,7 @@ public class ThymeleafController {
     /// GET USER DASHBOARD
     /// http://localhost:8080/user_dashboard
     @GetMapping("/user_dashboard")
-    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails){
+    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails) {
         return "user_dashboard";
     }
 
@@ -56,16 +73,17 @@ public class ThymeleafController {
     }
 
     /// MODELATTRIBUTE REGISTERDTO
-    @ModelAttribute("form")
-    public RegisterDto form(){
+    @ModelAttribute("registerForm")
+    public RegisterDto form() {
         return new RegisterDto();
     }
+
     /// POST REGISTER
     /// http://localhost:8080/register
     @PostMapping("/register")
     public String postRegister(@ModelAttribute RegisterDto registerDto, Model model) {
         userService.registerUser(registerDto);
-            return "redirect:/login?registered=true";
+        return "redirect:/login?registered=true";
     }
 
 
