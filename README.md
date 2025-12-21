@@ -2,137 +2,109 @@
 ![GitHub stars](https://img.shields.io/github/stars/ayhan-unlu/JobSearch?style=social) ![GitHub forks](https://img.shields.io/github/forks/ayhan-unlu/JobSearch?style=social) ![GitHub last commit](https://img.shields.io/github/last-commit/ayhan-unlu/OnlineCv)
 
 
-Online CV Project (Under Construction)
+# Online CV Project
 
-Online CV Project is a full-stack web application for managing job seeker CVs and candidate profiles. Users can submit their professional information, while admins (HR) will be able to efficiently review, filter, and manage candidates based on specific criteria.
+Online CV Project is a full-stack web application built with modern Spring technologies.  
+It enables job seekers to manage their CVs and personal profiles, while providing admins (HR) efficient tools for filtering and reviewing candidates.
 
-⚠️ Project Status: Currently under construction. Core features have been implemented, but some functionalities are still in development and the project is not fully finished.
+The system is fully functional, end-to-end tested, and ready for deployment.
 
-🎯 Features (Planned / In Progress)
-User Features
+---
 
-User registration & authentication (with password hashing)
+## 🎯 Features
 
-Login restrictions: 3 attempts maximum, blocked if exceeded
+**User Features**
+- User registration & authentication
+- Role-based dashboard (USER)
+- View personal profile (CV details)
+    - Name, surname, phone
+    - Field of experience
+    - Work experience (years)
+    - Military service status
+    - CV retention duration (KVKK compliance)
+- Secure logout and session handling
 
-Create and edit CV information:
+**Admin Features**
+- Admin login & secure session
+- Admin dashboard
+- View full list of registered users
+- Filter users by:
+    - Military service completed
+    - Minimum 5 years of experience
 
-Name, surname, phone, field of experience
+**Platform Features**
+- Full Spring Security integration
+- Persistent user data
+- Service layer handles business logic and filtering
+- Thymeleaf-based UI
+- MySQL relational database
+- Logging of key actions (registration, login, dashboard access)
+- Paging / pagination for large datasets
 
-Work experience (years)
+---
 
-Military service status
-
-CV retention duration (KVKK compliance)
-
-View personal profile in a User Dashboard
-
-Admin (HR) Features
-
-Admin login & secure session
-
-Admin dashboard to access all registered users
-
-Filter users by:
-
-Military service completed
-
-Minimum 5 years of experience
-
-View detailed candidate information
-
-Logging of actions for auditing
-
-Platform Features
-
-Role-based dashboards (USER / ADMIN)
-
-Full Spring Security integration
-
-MySQL database for persistence
-
-Thymeleaf-based UI (React/Angular optional)
-
-Service layer for business logic and filtering
-
-Logging all user and admin actions
-
-Paging / pagination for large datasets
-
-🏗️ Architecture
+## 🏗️ Architecture
 
 The application follows a layered architecture:
 
-Layer	Description
-Controller Layer	Thymeleaf pages, routing, dashboards
-Service Layer	Business logic, filtering, login attempts
-Repository Layer	JPA repositories for User and CV entities
-Entity Layer	Hibernate-mapped domain objects, enums, optional fields
-Security Layer	AuthenticationProvider, Spring Security, login restrictions
-Database Layer	MySQL with proper relations: Admin (1) → User (N)
-⚙️ Tech Stack
-Layer / Component	Technology
-Backend	Spring Boot 4
-Security	Spring Security
-ORM / DB	Hibernate / JPA + MySQL
-Frontend	HTML, Thymeleaf (React/Angular optional)
-Build Tool	Maven
-Language	Java 25
-Logging	SLF4J / Logback
-Design Patterns	Interface, Abstract, Inheritance, Stream API, Optional, Enum
+| Layer | Description |
+|-------|-------------|
+| Controller Layer | Thymeleaf pages, routing, dashboards |
+| Service Layer | Business logic, filtering, login attempts |
+| Repository Layer | JPA repositories for User entities |
+| Entity Layer | Hibernate-mapped domain objects, enums, optional fields |
+| Security Layer | AuthenticationProvider, RBAC, session management |
+| Database Layer | MySQL schema with Admin (1) → User (N) relationships |
+
+---
+
+## ⚙️ Tech Stack
+
+| Layer / Component | Technology |
+|------------------|------------|
+| Backend | Spring Boot 4 |
+| Security | Spring Security |
+| ORM / DB | Hibernate / JPA + MySQL |
+| Frontend | HTML + Thymeleaf |
+| Build Tool | Maven |
+| Language | Java 25 |
+| Logging | SLF4J / Logback |
+| Design Patterns | Interface, Abstract, Inheritance, Stream API, Optional, Enum |
+
+---
+
 🚀 Getting Started
 
-Clone the repository
+Clone the repository: git clone https://github.com/ayhan-unlu/OnlineCV.git and cd OnlineCV
 
-git clone https://github.com/ayhan-unlu/JobSearch.git
-cd JobSearch
+Configure MySQL: CREATE DATABASE onlinecvdb;
 
-
-Configure MySQL
-
-CREATE DATABASE onlinecv;
-
-
-Update application.properties:
-
-spring.datasource.url=jdbc:mysql://localhost:3306/onlinecv
+Update application.properties with your database credentials:
+spring.datasource.url=jdbc:mysql://localhost:3306/onlinecvdb
 spring.datasource.username=yourUser
 spring.datasource.password=yourPassword
 spring.jpa.hibernate.ddl-auto=update
 
+Run the project: mvn spring-boot:run
 
-Run the project
+Access the application at: http://localhost:8080
 
-mvn spring-boot:run
+🧪 Testing
 
-
-The application runs at: http://localhost:8080
-
-(Note: Some features are still under development and may not work fully.)
-
-🧪 Testing (In Progress)
-
-Manual UI testing via browser
-
-Service-layer filtering validation
-
-Login flow & session management (blocked users)
-
-Controller → Service → Repository integration checks
-
-Optional: JUnit test cases for service & repository layer
+The project allows: manual UI testing via browser, service-layer filtering validation, login flow and session management (blocked users), and Controller → Service → Repository integration checks. Optional: JUnit test cases for service & repository layer can be added.
 
 🗂️ Directory Structure
+
 src/main/java/com.ayhanunlu
 ├── controller/
 ├── data/
-│    ├── dto/
-│    ├── entity/
-│    ├── repository/
+│ ├── dto/
+│ ├── entity/
+│ ├── repository/
 ├── enums/
 ├── security/
 ├── service/
-│    ├── impl/
+│ ├── impl/
 └── Application.java
 
 src/main/resources/
@@ -141,32 +113,15 @@ src/main/resources/
 
 📄 License
 
-MIT License – free use, modification, and distribution.
+This project is licensed under MIT License – free use, modification, and distribution.
 
 👤 Developer
 
 Ayhan Ünlü – Java & Spring Boot Developer
 
-Demonstrates expertise in:
-
-Spring Boot layered architecture
-
-Role-based security & login restrictions
-
-JPA/Hibernate ORM
-
-MVC with Thymeleaf (or React/Angular)
-
-Clean code, S.O.L.I.D principles, design patterns
+Demonstrates expertise in Spring Boot layered architecture, role-based security & login restrictions, JPA/Hibernate ORM, MVC with Thymeleaf, clean code, and S.O.L.I.D principles.
 
 📦 Project Status
 
-Under Construction – Core features implemented, but work is ongoing to:
+Completed
 
-Complete all user/admin functionalities
-
-Finalize login and CV management flows
-
-Implement full filtering and paging
-
-Enhance logging and testing
