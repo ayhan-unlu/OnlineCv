@@ -86,6 +86,25 @@
         </tbody>
     </table>
 </div>
+<div class="container mt-5">
+    <h1 th:text="'FILTER OPTIONS'"></h1>
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <a th:href="@{/admin_dashboard/military_service_filter}" th:text="'Filter by Military Service'"></a>
+            </td>
+            <td>
+                <a th:href="@{/admin_dashboard/five_plus_experience_year_filter}" th:text="'Filter by 5+ Experience Year'"></a>
+            </td>
+            <td>
+                <a th:href="@{/admin_dashboard}" th:text="'Show All'"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
 
 <div class="text-center mt-4">
     <form th:action="@{/logout}" method="post">

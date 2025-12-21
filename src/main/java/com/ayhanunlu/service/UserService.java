@@ -11,4 +11,6 @@ public interface UserService {
     void onLoginFailure(String username);
     UserEntity getLoggedInUserEntity(String username);
     List<UserEntity> getAllUsers();
+    List<UserEntity> getAllUsersMilitaryServiceFinished();
+    List<UserEntity> getAllUsers5PlusExperienceYear();
 }

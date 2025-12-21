@@ -67,10 +67,28 @@ public class ThymeleafController {
         return "admin_dashboard";
     }
 
+    /// MILITARY SERVICE FILTER
+    /// http://localhost:8080/admin_dashboard
+    @GetMapping("/admin_dashboard/military_service_filter")
+    public String militaryServiceFilter(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("loggedInAdminEntity",userService.getLoggedInUserEntity(userDetails.getUsername()));
+        model.addAttribute("userEntityList", userService.getAllUsersMilitaryServiceFinished());
+        return "admin_dashboard";
+    }
+
+    /// 5 PLUS EXPERIENCE YEAR FILTER
+    /// http://localhost:8080/five_plus_experience_year_filter
+    @GetMapping("/admin_dashboard/five_plus_experience_year_filter")
+    public String fivePlusExperienceYearFilter(@AuthenticationPrincipal UserDetails userDetails, Model model){
+        model.addAttribute("loggedInAdminEntity",userService.getLoggedInUserEntity(userDetails.getUsername()));
+        model.addAttribute("userEntityList",userService.getAllUsers5PlusExperienceYear());
+        return "admin_dashboard";
+    }
+
     /// GET USER DASHBOARD
     /// http://localhost:8080/user_dashboard
     @GetMapping("/user_dashboard")
-    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails,Model model) {
+    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("loggedInUserEntity", userService.getLoggedInUserEntity(userDetails.getUsername()));
         return "user_dashboard";
     }

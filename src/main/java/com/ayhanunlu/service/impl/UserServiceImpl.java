@@ -94,6 +94,26 @@ public class UserServiceImpl implements UserService {
         }return userEntityList;
     }
 
+    @Override
+    public List<UserEntity> getAllUsersMilitaryServiceFinished(){
+        List<UserEntity> userEntityList = new ArrayList<>();
+        for(UserEntity userEntity : getAllUsers()){
+            if(userEntity.isMilitaryServiceFinished()){
+                userEntityList.add(userEntity);
+            }
+        }return userEntityList;
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers5PlusExperienceYear(){
+        List<UserEntity> userEntityList = new ArrayList<>();
+        for(UserEntity userEntity : getAllUsers()){
+            if(userEntity.getExperienceYear()>=5){
+                userEntityList.add(userEntity);
+            }
+        }return userEntityList;
+    }
+
     private boolean isUsernameInUse(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
