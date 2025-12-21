@@ -81,6 +81,7 @@ public class UserServiceImpl implements UserService {
         UserEntity loggedInUserEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(username));
         loggedInUserEntity.setPassword(null);
+        log.info("Logged in UserEntity for User {} created.",username);
         return loggedInUserEntity;
     }
 
@@ -101,7 +102,9 @@ public class UserServiceImpl implements UserService {
             if(userEntity.isMilitaryServiceFinished()){
                 userEntityList.add(userEntity);
             }
-        }return userEntityList;
+        }
+        log.info("Military Service Finished UserList is created.");
+        return userEntityList;
     }
 
     @Override
@@ -111,7 +114,9 @@ public class UserServiceImpl implements UserService {
             if(userEntity.getExperienceYear()>=5){
                 userEntityList.add(userEntity);
             }
-        }return userEntityList;
+        }
+        log.info("5+ Experience Year UserList is created.");
+        return userEntityList;
     }
 
     private boolean isUsernameInUse(String username) {
