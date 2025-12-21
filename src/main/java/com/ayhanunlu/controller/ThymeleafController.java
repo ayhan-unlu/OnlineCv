@@ -45,12 +45,14 @@ public class ThymeleafController {
         if (registered != null) {
             loginDto.setErrorMessage("Registration successful. Please Log in.");
         }
-        if (error != null && username !=null) {
+        if (error != null /*&& username !=null*/) {
             loginDto.setErrorMessage("Invalid username or password. Please try again.");
-            userRepository.findByUsername(username).ifPresent(userEntity ->{
-                loginDto.setFailedLoginAttempts(userEntity.getFailedLoginAttempts());
-                loginDto.setStatus(userEntity.getStatus());
-            });
+            if (username != null) {
+                userRepository.findByUsername(username).ifPresent(userEntity -> {
+                    loginDto.setFailedLoginAttempts(userEntity.getFailedLoginAttempts());
+                    loginDto.setStatus(userEntity.getStatus());
+                });
+            }
         }
         model.addAttribute("loginDto", loginDto);
         return "login";

@@ -28,12 +28,8 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                                 .loginPage("/login")
-//                        .defaultSuccessUrl("/admin_dashboard", true)
                                 .successHandler(roleBasedAuthenticationSuccessHandler)
                                 .failureHandler(loginFailureHandler)
-/*
-                                .failureUrl("/login?error=true")
-*/
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")

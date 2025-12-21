@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, LoginAttemptService loginAttemptService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.loginAttemptService =loginAttemptService;
+        this.loginAttemptService = loginAttemptService;
     }
 
     @Override
@@ -74,17 +74,34 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
-    public void onLoginFailure(String username){
-        loginAttemptService.increaseFailedLoginAttempts(username);
+    public void onLoginFailure(String username) {
+/*
+        UserEntity userEntity = userRepository.findByUsername(username).orElse(null);
+        if(userEntity == null){
+            log.warn("Login Failed. Username {} Not Found.",username);
+            return;
+        }
+*/
+        userRepository.findByUsername(username).ifPresent(userEntity -> {
+            if (userEntity.getStatus() != Status.BLOCKED) {
+//                log.warn("User {} is blocked", username);
+                loginAttemptService.increaseFailedLoginAttempts(username);
+            }
+        });
+/*
+        if(userEntity.getStatus()==Status.BLOCKED){
+            log.warn("Login Failed. Username {} is Blocked.",username);
+            return;
+        }
+*/
     }
 
-    public boolean isUserActive(String username){
+    public boolean isUserActive(String username) {
         return userRepository.findByUsername(username)
-                .map(userEntity -> userEntity.getStatus()==Status.ACTIVE)
+                .map(userEntity -> userEntity.getStatus() == Status.ACTIVE)
                 .orElse(false);
 
     }
-
 
 
 }

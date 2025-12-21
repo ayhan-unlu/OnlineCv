@@ -35,17 +35,23 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
             foundUserEntity.setFailedLoginAttempts(increasedFailedLoginAttempts);
             if (increasedFailedLoginAttempts >= 3) {
                 foundUserEntity.setStatus(Status.BLOCKED);
+                log.warn("User {} has been blocked", username);
             }
             userRepository.save(foundUserEntity);
+            log.warn("User {}'s failed login attempts increased to {}", username, increasedFailedLoginAttempts);
         });
     }
 
     @Override
     public void resetFailedLoginAttempts(String username) {
+
         userRepository.findByUsername(username).ifPresent(foundUserEntity ->
         {
-            foundUserEntity.setFailedLoginAttempts(0);
-            userRepository.save(foundUserEntity);
+            if (foundUserEntity.getFailedLoginAttempts() != 0) {
+                foundUserEntity.setFailedLoginAttempts(0);
+                log.info("Failed login attempts reset for User {}", username);
+                userRepository.save(foundUserEntity);
+            }
         });
     }
 
