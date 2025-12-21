@@ -6,14 +6,91 @@
 </head>
 <body>
 <div class="text-center mt-5">
-    <h1 th:text="'Welcome to Admin Dashboard'">
+    <h1 th:text="'Welcome Admin '+${loggedInAdminEntity.username}+' to Admin Dashboard'">
     </h1>
 </div>
+<div class="container mt-5">
+    <h1 th:text="'Admin Details'"></h1>
+    <table class="table table-striped table-hover table-bordered">
+        <tbody>
+        <tr>
+            <td th:text="'Id'"></td>
+            <td th:text="${loggedInAdminEntity.id}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Username'"></td>
+            <td th:text="${loggedInAdminEntity.username}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Role'"></td>
+            <td th:text="${loggedInAdminEntity.role}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Status'"></td>
+            <td th:text="${loggedInAdminEntity.status}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Name'"></td>
+            <td th:text="${loggedInAdminEntity.name}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Surname'"></td>
+            <td th:text="${loggedInAdminEntity.surname}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Phone'"></td>
+            <td th:text="${loggedInAdminEntity.phone}"></td>
+        </tr>
+        <tr>
+            <td th:text="'Failed Login Attempt'"></td>
+            <td th:text="${loggedInAdminEntity.failedLoginAttempts}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="container mt-5">
+    <h1 th:text="'USER LIST'"></h1>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+        <tr>
+            <th th:text="'ID'"></th>
+            <th th:text="'USERNAME'"></th>
+            <th th:text="'ROLE'"></th>
+            <th th:text="'STATUS'"></th>
+            <th th:text="'NAME'"></th>
+            <th th:text="'SURNAME'"></th>
+            <th th:text="'PHONE'"></th>
+            <th th:text="'FIELD OF EXPERIENCE'"></th>
+            <th th:text="'EXPERIENCE YEAR'"></th>
+            <th th:text="'MILITARY SERVICE FINISHED'"></th>
+            <th th:text="'CV STORAGE MONTH'"></th>
+            <th th:text="'FAILED LOGIN ATTEMPTS'"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="userEntity:${userEntityList}">
+            <td th:text="${userEntity.id}"></td>
+            <td th:text="${userEntity.username}"></td>
+            <td th:text="${userEntity.role}"></td>
+            <td th:text="${userEntity.status}"></td>
+            <td th:text="${userEntity.name}"></td>
+            <td th:text="${userEntity.surname}"></td>
+            <td th:text="${userEntity.phone}"></td>
+            <td th:text="${userEntity.fieldOfExperience}"></td>
+            <td th:text="${userEntity.experienceYear}"></td>
+            <td th:text="${userEntity.militaryServiceFinished}"></td>
+            <td th:text="${userEntity.cvStorageMonth}"></td>
+            <td th:text="${userEntity.failedLoginAttempts}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 <div class="text-center mt-4">
     <form th:action="@{/logout}" method="post">
         <button type="submit" th:text="'Logout'"></button>
     </form>
-
 </div>
 </body>
 </html>

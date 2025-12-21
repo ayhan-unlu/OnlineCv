@@ -9,8 +9,14 @@ import com.ayhanunlu.repository.UserRepository;
 import com.ayhanunlu.service.LoginAttemptService;
 import com.ayhanunlu.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.ayhanunlu.enums.Role.ROLE_USER;
 
 @Slf4j
 @Service
@@ -55,7 +61,7 @@ public class UserServiceImpl implements UserService {
             UserEntity newUserEntity = new UserEntity();
             newUserEntity.setUsername(registerDto.getUsername());
             newUserEntity.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-            newUserEntity.setRole(Role.ROLE_USER);
+            newUserEntity.setRole(ROLE_USER);
             newUserEntity.setStatus(Status.ACTIVE);
             newUserEntity.setName(registerDto.getName());
             newUserEntity.setSurname(registerDto.getSurname());
@@ -70,36 +76,34 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserEntity getLoggedInUserEntity(String username) {
+        UserEntity loggedInUserEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+        loggedInUserEntity.setPassword(null);
+        return loggedInUserEntity;
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers(){
+        List<UserEntity> userEntityList= new ArrayList<>();
+        for(UserEntity userEntity : userRepository.findAll()){
+            if(userEntity.getRole()==Role.ROLE_USER){
+                userEntityList.add(userEntity);
+            }
+        }return userEntityList;
+    }
+
     private boolean isUsernameInUse(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
 
     public void onLoginFailure(String username) {
-/*
-        UserEntity userEntity = userRepository.findByUsername(username).orElse(null);
-        if(userEntity == null){
-            log.warn("Login Failed. Username {} Not Found.",username);
-            return;
-        }
-*/
         userRepository.findByUsername(username).ifPresent(userEntity -> {
             if (userEntity.getStatus() != Status.BLOCKED) {
-//                log.warn("User {} is blocked", username);
                 loginAttemptService.increaseFailedLoginAttempts(username);
             }
         });
-/*
-        if(userEntity.getStatus()==Status.BLOCKED){
-            log.warn("Login Failed. Username {} is Blocked.",username);
-            return;
-        }
-*/
-    }
-
-    public boolean isUserActive(String username) {
-        return userRepository.findByUsername(username)
-                .map(userEntity -> userEntity.getStatus() == Status.ACTIVE)
-                .orElse(false);
 
     }
 

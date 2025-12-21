@@ -4,7 +4,6 @@ import com.ayhanunlu.data.entity.UserEntity;
 import com.ayhanunlu.enums.Status;
 import com.ayhanunlu.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

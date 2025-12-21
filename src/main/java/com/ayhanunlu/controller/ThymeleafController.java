@@ -61,14 +61,17 @@ public class ThymeleafController {
     /// GET ADMIN DASHBOARD
     /// http://localhost:8080/admin_dashboard
     @GetMapping("/admin_dashboard")
-    public String adminDashboard(@AuthenticationPrincipal UserDetails userDetails) {
+    public String adminDashboard(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        model.addAttribute("loggedInAdminEntity", userService.getLoggedInUserEntity(userDetails.getUsername()));
+        model.addAttribute("userEntityList", userService.getAllUsers());
         return "admin_dashboard";
     }
 
     /// GET USER DASHBOARD
     /// http://localhost:8080/user_dashboard
     @GetMapping("/user_dashboard")
-    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails) {
+    public String userDashboard(@AuthenticationPrincipal UserDetails userDetails,Model model) {
+        model.addAttribute("loggedInUserEntity", userService.getLoggedInUserEntity(userDetails.getUsername()));
         return "user_dashboard";
     }
 
