@@ -4,6 +4,7 @@ import com.ayhanunlu.data.dto.LoginDto;
 import com.ayhanunlu.data.dto.RegisterDto;
 import com.ayhanunlu.exception.BusinessException;
 import com.ayhanunlu.repository.UserRepository;
+import com.ayhanunlu.security.LoginFailureHandler;
 import com.ayhanunlu.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,14 +38,19 @@ public class ThymeleafController {
     public String login(
             @RequestParam(required = false) String registered,
             @RequestParam(required = false) String error,
+            @RequestParam(required = false) String username,
             Model model
     ) {
         LoginDto loginDto = new LoginDto();
         if (registered != null) {
             loginDto.setErrorMessage("Registration successful. Please Log in.");
         }
-        if (error != null) {
+        if (error != null && username !=null) {
             loginDto.setErrorMessage("Invalid username or password. Please try again.");
+            userRepository.findByUsername(username).ifPresent(userEntity ->{
+                loginDto.setFailedLoginAttempts(userEntity.getFailedLoginAttempts());
+                loginDto.setStatus(userEntity.getStatus());
+            });
         }
         model.addAttribute("loginDto", loginDto);
         return "login";

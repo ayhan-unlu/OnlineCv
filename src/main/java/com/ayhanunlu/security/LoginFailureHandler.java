@@ -26,6 +26,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     )throws IOException {
         String username = httpServletRequest.getParameter("username");
         userService.onLoginFailure(username);
-        httpServletResponse.sendRedirect("/login?error");
+        httpServletResponse.sendRedirect("/login?error=true&username="+username);
     }
 }

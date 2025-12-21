@@ -10,7 +10,16 @@
 </div>
 
 <!--http://localhost:8080/login -->
-<div th:if="${loginDto.errorMessage}" class="alert alert-danger" th:text="${loginDto.errorMessage}"></div>
+<!--<div th:if="${loginDto.errorMessage}" class="alert alert-danger" th:text="${loginDto.errorMessage}+${loginDto.failedLoginAttempts} + ' login Attempts left.'"></div>-->
+<div th:if="${loginDto.errorMessage}">
+    <span th:if="${loginDto.status !=null and loginDto.status.name() != 'BLOCKED'}"
+    th:text="${loginDto.errorMessage + ' ' + (3 - loginDto.failedLoginAttempts) + ' login attempts left.'}">
+    </span>
+    <span th:if="${loginDto.status !=null and loginDto.status.name()=='BLOCKED'}"
+    th:text="'Your Account has been Blocked due to 3 failed login attempts.'">
+
+    </span>
+</div>
 
 <div class="text-center mt-5">
     <form th:action="@{/login}" method="post">
