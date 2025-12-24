@@ -111,6 +111,27 @@ src/main/resources/
 ├── templates/ (Thymeleaf views)
 └── application.properties
 
+> SCREENSHOTS
+
+>>![Screenshot 2025-12-24 at 22.37.14.png](screenshots/Screenshot%202025-12-24%20at%2022.37.14.png)
+> 
+>>![Screenshot 2025-12-24 at 22.37.40.png](screenshots/Screenshot%202025-12-24%20at%2022.37.40.png)
+> 
+> >![Screenshot 2025-12-24 at 22.38.02.png](screenshots/Screenshot%202025-12-24%20at%2022.38.02.png)
+> 
+> >![Screenshot 2025-12-24 at 22.38.21.png](screenshots/Screenshot%202025-12-24%20at%2022.38.21.png)
+> 
+> >![Screenshot 2025-12-24 at 22.39.14.png](screenshots/Screenshot%202025-12-24%20at%2022.39.14.png)
+> 
+> >![Screenshot 2025-12-24 at 22.40.03.png](screenshots/Screenshot%202025-12-24%20at%2022.40.03.png)
+> 
+> >![Screenshot 2025-12-24 at 22.40.24.png](screenshots/Screenshot%202025-12-24%20at%2022.40.24.png)
+> 
+> >![Screenshot 2025-12-24 at 22.41.28.png](screenshots/Screenshot%202025-12-24%20at%2022.41.28.png)
+> 
+> >![Screenshot 2025-12-24 at 22.42.50.png](screenshots/Screenshot%202025-12-24%20at%2022.42.50.png)
+> 
+
 📄 License
 
 This project is licensed under MIT License – free use, modification, and distribution.
